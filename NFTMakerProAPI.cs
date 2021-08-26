@@ -48,7 +48,8 @@ public class NFTMakerProAPI : MonoBehaviour
     {
         public string paymentAddress;
         public string expires;
-        public string adaToSend;
+        public string adaToSend;        
+        
     }
 
     // Project API information
@@ -76,9 +77,24 @@ public class NFTMakerProAPI : MonoBehaviour
 
     public void GetADDRSpecNFT()
     {
-        string uri = APIHTTPAddress + "/"+APIProjectKey+"/" + APIProjectID + "/" + APINFTID + "/" + APINFTQuantity + "/" + APINFTLovelace;
+        string uri = APIHTTPAddress + "GetAddressForSpecificNftSale" + "/" + APIProjectKey + "/" + APIProjectID + "/" + APINFTID + "/" + APINFTQuantity + "/" + APINFTLovelace;
         StartCoroutine(APIGetADDRSpecNFT(uri));
+        Debug.Log(uri);
     }
+
+    public void GetAddressForRandomNftSale()
+    {
+        string uri = APIHTTPAddress + "GetAddressForRandomNftSale" + "/" + APIProjectKey + "/" + APIProjectID + "/" + APINFTQuantity + "/" + APINFTLovelace;
+        StartCoroutine(APIGetADDRRandomNFT(uri));
+    }
+
+
+
+
+
+
+
+
 
     /*------------------------------------------------------------------------------
     *##############################################################################
@@ -111,7 +127,7 @@ public class NFTMakerProAPI : MonoBehaviour
 
     IEnumerator APIGetADDRSpecNFT(string uri)
     {
-        Debug.Log("Getting Data from API using: "+uri);
+        Debug.Log("Getting Data from API using: " + uri);
         UnityWebRequest www = UnityWebRequest.Get(uri);
         yield return www.SendWebRequest();
         if (www.result != UnityWebRequest.Result.Success)
@@ -119,7 +135,25 @@ public class NFTMakerProAPI : MonoBehaviour
             Debug.Log(www.error);
         }
         else
-        { 
+        {
+            Debug.Log("Data Retrieved from API");
+            Debug.Log(www.downloadHandler.text);
+            processSpecificNFTData(www.downloadHandler.text);
+        }
+    }
+
+
+    IEnumerator APIGetADDRRandomNFT(string uri)
+    {
+        Debug.Log("Getting Data from API using: " + uri);
+        UnityWebRequest www = UnityWebRequest.Get(uri);
+        yield return www.SendWebRequest();
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
             Debug.Log("Data Retrieved from API");
             Debug.Log(www.downloadHandler.text);
             processSpecificNFTData(www.downloadHandler.text);
